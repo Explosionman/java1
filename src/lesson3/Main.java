@@ -72,7 +72,6 @@ public class Main {
         String encryptedWord = "###############";
         char[] arrayOfEncryptedChars = encryptedWord.toCharArray();
         String userInput = "";
-        System.out.println("Загадано: " + randomWord);
 
         System.out.print("Загадано одно слово из списка: ");
         for (int i = 0; i < words.length; i++) {
