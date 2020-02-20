@@ -10,10 +10,8 @@ public class Main {
 
     public static void main(String[] args) {
         //  Закомментировано для раздельной проверки
-        while (restartOrEnd) {
-            System.out.println("Задание №1:");
-            guessTheNumber();
-        }
+        System.out.println("Задание №1:");
+        guessTheNumber();
 //        System.out.println("Задание №2:");
 //        guessTheWord();
     }
@@ -22,40 +20,38 @@ public class Main {
     //это число. При каждой попытке компьютер сообщает, больше ли указанное пользователем число, чем загаданное,
     // или меньше. После победы или проигрыша выводится запрос – «Повторить игру еще раз? 1 – да / 0 – нет»
     static void guessTheNumber() {
-        int randomDigit = rand.nextInt(10);
-        System.out.println("Загадано число от 0 до 9. У Вас есть 3 попытки, чтобы его угадать.");
-        int attemptsCount = 1;
-
-        while (attemptsCount < 4) {
-            System.out.printf("Попытка №%d, введите число:\n", attemptsCount);
-            int userInput = sc.nextInt();
-            if (userInput == randomDigit) {
-                System.out.println("Поздравляю! Вы угадали!\nПовторить игру еще раз? 1 – да / 0 – нет");
-                restartOrEnd = endGame();
-                break;
-            } else if (userInput > randomDigit) {
-                System.out.println("Вы ввели слишком большое число.");
-                attemptsCount++;
-            } else if (userInput < randomDigit) {
-                System.out.println("Вы ввели слишком маленькое число.");
-                attemptsCount++;
+        boolean restart = true;
+        do {
+            int randomDigit = rand.nextInt(10);
+            System.out.println("Загадано число от 0 до 9. У Вас есть 3 попытки, чтобы его угадать.");
+            for (int i = 1; i < 4; i++) {
+                System.out.println("Попытка №" + i + ", введите число:");
+                int userInput = sc.nextInt();
+                if (userInput == randomDigit) {
+                    System.out.println("Поздравляю! Вы угадали");
+                    break;
+                } else if (i == 3 && userInput != randomDigit) {
+                    System.out.println("Вы проиграли =( ");
+                    break;
+                } else if (userInput > randomDigit) {
+                    System.out.println("Вы ввели слишком большое число.");
+                } else if (userInput < randomDigit) {
+                    System.out.println("Вы ввели слишком маленькое число.");
+                }
             }
-            checkLose(attemptsCount, randomDigit, userInput);
-        }
-    }
-
-    //Метод проверки пороигрыша
-    static void checkLose(int attemptsCount, int randomDigit, int userInput) {
-        if (attemptsCount == 4 && userInput != randomDigit) {
-            System.out.println("Вы проиграли =(\nПовторить игру еще раз? 1 – да / 0 – нет");
-            restartOrEnd = endGame();
-        }
+            restart = setRestartOrEnd();
+        } while (restart != false);
     }
 
     //Метод для продолжения/завершения игры
-    static boolean endGame() {
+    static boolean setRestartOrEnd() {
+        System.out.println("Повторить игру еще раз? 1 – да / 0 – нет");
         int userChoice = sc.nextInt();
-        return userChoice == 0 ? false : true;
+        if (userChoice == 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     //Задание №2. Создаём массив. При запуске программы компьютер загадывает слово, запрашивает ответ у пользователя,
@@ -66,32 +62,34 @@ public class Main {
                 "garlic", "grape", "melon", "leak", "kiwi", "mango", "mushroom", "nut", "olive", "pea", "peanut", "pear",
                 "pepper", "pineapple", "pumpkin", "potato"};
         String randomWord = words[rand.nextInt(words.length - 1)];
-        StringBuilder encryptedWord = new StringBuilder();
-        encryptedWord.append("###############");
+        StringBuilder encryptedWord = new StringBuilder("###############");
         String userInput = "";
 
         printList(words);
 
         while (!userInput.equals(randomWord)) {
             userInput = sc.nextLine();
-            //Определяем количество итераций принципом: какое слово имеет меньшую длину (Math.min), такое и берем за основу
-            int length = Math.min(randomWord.length(), userInput.length());
+            updateEncryptedWord(userInput, encryptedWord, randomWord);
 
-            for (int i = 0; i < length; i++) {
-                if (userInput.charAt(i) == randomWord.charAt(i)) {
-                    encryptedWord.setCharAt(i, userInput.charAt(i));
-                }
-            }
-            //Создаём переменную на основе encryptedWord, длины загаданного слова, для проверки на совпадение
-            String partOfEncryptedWord = encryptedWord.substring(0, randomWord.length());
-            //Если ввод пользователя = загаданному слову или пользователь добился успеха вводом нескольких неправльных вводов
-            if (userInput.equals(randomWord) || randomWord.equals(partOfEncryptedWord)) {
+            if (userInput.equals(randomWord)) {
                 System.out.printf("Верно, это, %s. Поздравляю!", randomWord);
                 break;
             }
-            System.out.printf("Ответ кроется за решетками, угадайте оставшиеся буквы:\n%s\nВы не угадали =( Попробуйте ещё, " +
-                    "ведь игра не остановится, пока Вы не добьётесь успеха.\n", encryptedWord);
+            System.out.println("Вы не угадали =( Ответ кроется за решетками, угадайте оставшиеся буквы:");
+            System.out.println(encryptedWord);
         }
+    }
+
+    //Метод для обновления зашифрованного слова
+    static StringBuilder updateEncryptedWord(String userInput, StringBuilder encryptedWord, String randomWord) {
+        //Определяем количество итераций принципом: какое слово имеет меньшую длину (Math.min), такое и берем за основу
+        int length = Math.min(randomWord.length(), userInput.length());
+        for (int i = 0; i < length; i++) {
+            if (userInput.charAt(i) == randomWord.charAt(i)) {
+                encryptedWord.setCharAt(i, userInput.charAt(i));
+            }
+        }
+        return encryptedWord;
     }
 
     //Метод для вывода задания
