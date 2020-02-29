@@ -4,10 +4,10 @@ public abstract class Animal {
     private static int animalCounter = 0;
     protected int runLimit;
     protected int swimLimit;
-    protected int jumpLimit;
+    protected double jumpLimit;
     protected String name;
 
-    public Animal(String name, int runLimit, int swimLimit, int jumpLimit) {
+    public Animal(String name, int runLimit, int swimLimit, double jumpLimit) {
         this.name = name;
         this.runLimit = runLimit;
         this.swimLimit = swimLimit;
@@ -27,7 +27,7 @@ public abstract class Animal {
         System.out.println(name + " swim " + (value <= swimLimit));
     }
 
-    public void jump(int value) {
-        System.out.println(name + " jump " + (value <= swimLimit));
+    public void jump(double height) {
+        System.out.println(name + " jump " + (height <= jumpLimit));
     }
 }
