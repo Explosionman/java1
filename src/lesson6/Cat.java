@@ -3,8 +3,8 @@ package lesson6;
 public class Cat extends Animal {
     private static int catCounter = 0;
 
-    public Cat(String name) {
-        super(name);
+    public Cat(String name, int runLimit, int swimLimit, int jumpLimit) {
+        super(name, runLimit, swimLimit, jumpLimit);
         catCounter++;
     }
 
@@ -13,16 +13,7 @@ public class Cat extends Animal {
     }
 
     @Override
-    public void run(int distance) {
-        if (distance > 200) {
-            System.out.println("Слишком далеко. " + getName() + " не пробежит " + distance + " метров.");
-            return;
-        }
-        super.run(distance);
-    }
-
-    @Override
     public void swim(int distance) {
-        System.out.println(getName() + " не умеет плавать.");
+        System.out.println(name + " не умеет плавать.");
     }
 }

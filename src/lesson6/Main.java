@@ -3,25 +3,26 @@ package lesson6;
 public class Main {
     public static void main(String[] args) {
         //Создаём экземпляры классов Cat и Dog
-        Cat catBoris = new Cat("Борис");
-        Cat catMurzik = new Cat("Мурзик");
-        Dog dogTaddy = new Dog("Тэдди");
-        Dog dogDobi = new Dog("Доби");
-        Dog dogBobby = new Dog("Бобби");
+        Cat catBoris = new Cat("Борис", 200, 2, 5);
+        Cat catMurzik = new Cat("Мурзик", 150, 0, 3);
+        Dog dogTaddy = new Dog("Тэдди", 500, 40, 2);
+        Dog dogDobi = new Dog("Доби", 600, 15, 1);
 
         //Применяем метода к созданным экземплярам класса Cat
         catBoris.run(220);
         catBoris.swim(5);
-        catMurzik.run(20);
-        catMurzik.swim(0);
+        catBoris.jump(1);
+        catMurzik.run(80);
+        catMurzik.swim(2);
+        catMurzik.jump(5);
 
         //Применяем метода к созданным экземплярам класса Dog
-        dogTaddy.run(400);
+        dogTaddy.run(700);
         dogTaddy.swim(5);
+        dogTaddy.jump(4);
         dogDobi.run(400);
-        dogDobi.swim(15);
-        dogBobby.run(1000);
-        dogBobby.swim(6);
+        dogDobi.swim(18);
+        dogDobi.jump(1);
 
         System.out.println("Итого создано животных - " + dogTaddy.getAnimalCounter() + ": из них котов - "
                 + catBoris.getCatCounter() + ", собак - " + dogTaddy.getDogCounter());
