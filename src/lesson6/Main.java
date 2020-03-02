@@ -24,7 +24,7 @@ public class Main {
         dogDobi.swim(18);
         dogDobi.jump(1);
 
-        System.out.println("Итого создано животных - " + dogTaddy.getAnimalCounter() + ": из них котов - "
-                + catBoris.getCatCounter() + ", собак - " + dogTaddy.getDogCounter());
+        System.out.println("Итого создано животных - " + Animal.getAnimalCounter() + ": из них котов - "
+                + Cat.getCatCounter() + ", собак - " + Dog.getDogCounter());
     }
 }

@@ -2,9 +2,9 @@ package lesson6;
 
 public abstract class Animal {
     private static int animalCounter = 0;
-    protected int runLimit;
-    protected int swimLimit;
-    protected double jumpLimit;
+    private int runLimit;
+    private int swimLimit;
+    private double jumpLimit;
     protected String name;
 
     public Animal(String name, int runLimit, int swimLimit, double jumpLimit) {
@@ -15,7 +15,7 @@ public abstract class Animal {
         animalCounter++;
     }
 
-    public int getAnimalCounter() {
+    public static int getAnimalCounter() {
         return animalCounter;
     }
 
