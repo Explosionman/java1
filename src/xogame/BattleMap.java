@@ -19,7 +19,7 @@ public class BattleMap extends JPanel {
     boolean isInitialized = false;
 
     public BattleMap() {
-        setBackground(Color.ORANGE);
+        setBackground(new Color(20, 83, 86));
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -28,7 +28,6 @@ public class BattleMap extends JPanel {
             }
         });
     }
-
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -50,12 +49,10 @@ public class BattleMap extends JPanel {
             int y = i * cellHeight;
             g.drawLine(0, y, panelWidth, y);
         }
-
         for (int i = 0; i < fieldSizeX; i++) {
             int x = i * cellWidth;
             g.drawLine(x, 0, x, panelHeight);
         }
-
         for (int i = 0; i < Logic.SIZE; i++) {
             for (int j = 0; j < Logic.SIZE; j++) {
                 if (Logic.map[i][j] == Logic.DOT_X) {
@@ -66,7 +63,6 @@ public class BattleMap extends JPanel {
                 }
             }
         }
-
     }
 
     public void startNewGame(int mode, int fieldSizeX, int fieldSizeY, int winLength) {
@@ -84,7 +80,6 @@ public class BattleMap extends JPanel {
     private void update(MouseEvent e) {
         int cellX = e.getX() / cellWidth;
         int cellY = e.getY() / cellHeight;
-//        System.out.println("e.getButton() "+e.getButton());
 
         System.out.println(cellX + " " + cellY);
         if (!Logic.gameFinish) {
@@ -92,23 +87,27 @@ public class BattleMap extends JPanel {
         } else {
             System.out.println(Logic.winnerName);
         }
-
         repaint();
-
     }
 
     private void drawX(Graphics g, int cellX, int cellY) {
-        g.setColor(new Color(255, 0, 0));
+        g.setColor(new Color(167, 163, 15));
 
-        g.drawLine(cellX * cellWidth, cellY * cellHeight,
-                (cellX + 1) * cellWidth, (cellY + 1) * cellHeight);
+        Graphics2D g2 = (Graphics2D) g;
 
+        g2.setStroke(new BasicStroke(10.0f));
+
+        g2.drawLine(cellX * cellWidth + 15, cellY * cellHeight + 15,
+                (cellX + 1) * cellWidth - 15, (cellY + 1) * cellHeight - 15);
+        g2.drawLine((cellX) * cellWidth +15 , (cellY + 1) * cellHeight-15,
+                (cellX + 1) * cellWidth-15, (cellY) * cellHeight+15);
     }
 
     private void drawO(Graphics g, int cellX, int cellY) {
-        g.setColor(new Color(0, 13, 255));
-        g.drawOval(cellX * cellWidth, cellY * cellHeight,
-                cellWidth, cellHeight);
-
+        g.setColor(new Color(255, 85, 25));
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setStroke(new BasicStroke(8.0f));
+        g2.drawOval(cellX * cellWidth + 10, cellY * cellHeight + 10,
+                cellWidth - 15, cellHeight - 18);
     }
 }

@@ -16,9 +16,8 @@ public class StartNewGameWindow extends JFrame {
     private static final int MIN_WIN_LINE = 3;
     private static final int MAX_WIN_LINE = 10;
 
-    private static final String STR_FIELD_SIZE = "Field size: ";
-    private static final String STR_WIN_LENGTH = "Winning length: ";
-
+    private static final String STR_FIELD_SIZE = "Размер поля: ";
+    private static final String STR_WIN_LENGTH = "Длина победной линии: ";
 
     private JRadioButton jrbHumVsAi;
     private JRadioButton jrbHumVsHum;
@@ -27,21 +26,20 @@ public class StartNewGameWindow extends JFrame {
     private JSlider slFieldSize;
     private JSlider slWinLength;
 
-
     public StartNewGameWindow(GameWindow gameWindow) {
         this.gameWindow = gameWindow;
-        setTitle("NewGame setting");
+        setTitle("Настройки новой игры");
         setBounds(WINDOW_POS_X, WINDOW_POS_Y, WINDOW_WIDTH, WINDOW_HEIGHT);
         setResizable(false);
         setLayout(new GridLayout(10, 1));
 
-        jrbHumVsAi = new JRadioButton("Human vs Ai", true);
-        jrbHumVsHum = new JRadioButton("Human vs Human");
+        jrbHumVsAi = new JRadioButton("Человек против компьютера", true);
+        jrbHumVsHum = new JRadioButton("Человек против человека");
         gameMode = new ButtonGroup();
         gameMode.add(jrbHumVsAi);
         gameMode.add(jrbHumVsHum);
 
-        add(new JLabel("Game mode:"));
+        add(new JLabel("Режим игры:"));
         add(jrbHumVsAi);
         add(jrbHumVsHum);
 
@@ -55,16 +53,15 @@ public class StartNewGameWindow extends JFrame {
         slWinLength.setPaintTicks(true);
         slWinLength.setPaintLabels(true);
 
-        add(new JLabel("Choose field size:"));
+        add(new JLabel("Выберите размер поля:"));
         JLabel jlFieldSize = new JLabel(STR_FIELD_SIZE + MIN_FIELD_SIZE);
         add(jlFieldSize);
         add(slFieldSize);
 
-        add(new JLabel("Choose win length:"));
+        add(new JLabel("Выберите длину выйгрышной линии:"));
         JLabel jlWinLength = new JLabel(STR_WIN_LENGTH + MIN_WIN_LINE);
         add(jlWinLength);
         add(slWinLength);
-
 
         slFieldSize.addChangeListener(e -> {
             int currentFieldSize = slFieldSize.getValue();
@@ -76,27 +73,27 @@ public class StartNewGameWindow extends JFrame {
             jlWinLength.setText(STR_WIN_LENGTH + slWinLength.getValue());
         });
 
-        JButton btnStartGame = new JButton("Start a game");
+        JButton btnStartGame = new JButton("Начать игру");
         add(btnStartGame);
 
         btnStartGame.addActionListener(e -> {
             int gameMode;
             if (jrbHumVsAi.isSelected()) {
                 gameMode = BattleMap.H_VS_A;
+                int fieldSize = slFieldSize.getValue();
+                int winLength = slWinLength.getValue();
+
+                Logic.SIZE = fieldSize;
+                Logic.DOTS_TO_WIN = winLength;
+                Logic.initMap();
+                Logic.gameFinish = false;
+
+                gameWindow.startNewGame(gameMode, fieldSize, fieldSize, winLength);
+                setVisible(false);
             } else {
-                gameMode = BattleMap.H_VS_H;
+                JPanel myRootPane = new JPanel();
+                JOptionPane.showMessageDialog(myRootPane, "В разработке", "В разработке", JOptionPane.DEFAULT_OPTION);
             }
-            int fieldSize = slFieldSize.getValue();
-            int winLength = slWinLength.getValue();
-
-            Logic.SIZE = fieldSize;
-            Logic.DOTS_TO_WIN = winLength;
-            Logic.initMap();
-            Logic.gameFinish = false;
-
-
-            gameWindow.startNewGame(gameMode, fieldSize, fieldSize, winLength);
-            setVisible(false);
         });
 
         setVisible(false);

@@ -134,7 +134,6 @@ public class Main {
                     map[i][j] = DOT_X;
                     if (checkWin(DOT_X)) {
                         map[i][j] = DOT_O;
-                        System.out.println("Компьютер походил НА НИЧЬЮ в точку " + (j + 1) + " " + (i + 1));
                         return;
                     }
                     map[i][j] = DOT_EMPTY;
@@ -142,17 +141,14 @@ public class Main {
                 //AI стремится выйграть
                 if (map[i][j] == DOT_O && (isCellValid(i, j + 1) && isCellValid(i, j + 3))) {
                     map[i][j + 1] = DOT_O;
-                    System.out.println("Компьютер походил НА ПОБЕДУ в точку " + (j + 1) + " " + (i + 1));
                     return;
                 }
                 if (map[i][j] == DOT_O && (isCellValid(i + 1, j) && isCellValid(i + 3, j))) {
                     map[i + 1][j] = DOT_O;
-                    System.out.println("Компьютер походил НА ПОБЕДУ в точку " + (j + 1) + " " + (i + 1));
                     return;
                 }
                 if (map[i][i] == DOT_O && (isCellValid(i + 1, i + 1) && isCellValid(i + 3, i + 3))) {
                     map[i + 1][i + 1] = DOT_O;
-                    System.out.println("Компьютер походил НА ПОБЕДУ в точку " + (j + 1) + " " + (i + 1));
                     return;
                 }
             }

@@ -1,7 +1,7 @@
 package xogame;
 
+import javax.swing.*;
 import java.util.Random;
-import java.util.Scanner;
 
 public class Logic {
     static int SIZE = 3;
@@ -14,24 +14,26 @@ public class Logic {
     static char[][] map;
 
     static Random random = new Random();
-    static Scanner sc = new Scanner(System.in);
 
     public static boolean gameFinish = false;
-    public static String winnerName ="...";
+    public static String winnerName = "...";
 
     public static void go() {
+        JPanel myRootPane = new JPanel();
         gameFinish = true;
         printMap();
 
         if (checkWinLines(DOT_X)) {
-            System.out.println("Игрок ПОБЕДИЛ!!!");
-            winnerName ="Игрок ПОБЕДИЛ!!!";
+            System.out.println("РРіСЂРѕРє РїРѕР±РµРґРёР»");
+            winnerName = "РРіСЂРѕРє РїРѕР±РµРґРёР»";
+            JOptionPane.showMessageDialog(myRootPane, winnerName, "РРіСЂР° Р·Р°РІРµСЂС€РµРЅР°", JOptionPane.DEFAULT_OPTION);
             return;
         }
 
         if (isFull()) {
-            System.out.println("Ничья!");
-            winnerName ="Ничья!";
+            System.out.println("РќРёС‡СЊСЏ");
+            winnerName = "РќРёС‡СЊСЏ";
+            JOptionPane.showMessageDialog(myRootPane, winnerName, "РРіСЂР° Р·Р°РІРµСЂС€РµРЅР°", JOptionPane.DEFAULT_OPTION);
             return;
         }
 
@@ -39,14 +41,16 @@ public class Logic {
         printMap();
 
         if (checkWinLines(DOT_O)) {
-            System.out.println("Искуственный интеллект ПОБЕДИЛ!!!");
-            winnerName ="Искуственный интеллект ПОБЕДИЛ!!!";
+            System.out.println("РљРѕРјРїСЊСЋС‚РµСЂ РїРѕР±РµРґРёР»");
+            winnerName = "РљРѕРјРїСЊСЋС‚РµСЂ РїРѕР±РµРґРёР»";
+            JOptionPane.showMessageDialog(myRootPane, winnerName, "РРіСЂР° Р·Р°РІРµСЂС€РµРЅР°", JOptionPane.DEFAULT_OPTION);
             return;
         }
 
         if (isFull()) {
-            System.out.println("Ничья!");
-            winnerName ="Ничья!";
+            System.out.println("РќРёС‡СЊСЏ");
+            winnerName = "РќРёС‡СЊСЏ";
+            JOptionPane.showMessageDialog(myRootPane, winnerName, "РРіСЂР° Р·Р°РІРµСЂС€РµРЅР°", JOptionPane.DEFAULT_OPTION);
             return;
         }
         gameFinish = false;
@@ -77,9 +81,8 @@ public class Logic {
         }
     }
 
-
-    public static void setHumanXY(int x, int y){
-        if(isCellValid(y,x)){
+    public static void setHumanXY(int x, int y) {
+        if (isCellValid(y, x)) {
             map[y][x] = DOT_X;
             go();
         }
@@ -94,32 +97,41 @@ public class Logic {
 
     public static void aiTurn() {
         int x, y;
-
-//        for (int i = 0; i < SIZE; i++) {
-//            for (int j = 0; j < SIZE; j++) {
-//                if (isCellValid(i, j)) {
-//                    map[i][j] = DOT_O;
-//                    if (checkWinLines(DOT_O)) {
-//                        return;
-//                    }
-//                    map[i][j] = DOT_EMPTY;
-//                }
-//            }
-//        }
-//
-//        for (int i = 0; i < SIZE; i++) {
-//            for (int j = 0; j < SIZE; j++) {
-//                if (isCellValid(i, j)) {
-//                    map[i][j] = DOT_X;
-//                    if (checkWinLines(DOT_X)) {
-//                        map[i][j] = DOT_O;
-//                        return;
-//                    }
-//                    map[i][j] = DOT_EMPTY;
-//                }
-//            }
-//        }
-
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                //AI СЃС‚СЂРµРјРёС‚СЃСЏ РІС‹Р№РіСЂР°С‚СЊ
+                if (isCellValid(i, j)) {
+                    map[i][j] = DOT_O;
+                    if (checkWinLines(DOT_O)) {
+                        map[i][j] = DOT_O;
+                        return;
+                    }
+                    map[i][j] = DOT_EMPTY;
+                }
+                //AI Р±Р»РѕРєРёСЂСѓРµС‚ С…РѕРґС‹
+                if (isCellValid(i, j)) {
+                    map[i][j] = DOT_X;
+                    if (checkWinLines(DOT_X)) {
+                        map[i][j] = DOT_O;
+                        return;
+                    }
+                    map[i][j] = DOT_EMPTY;
+                }
+                //AI СЃС‚СЂРµРјРёС‚СЃСЏ РІС‹Р№РіСЂР°С‚СЊ
+                if (map[i][j] == DOT_O && (isCellValid(i, j + 1) && isCellValid(i, j + 3))) {
+                    map[i][j + 1] = DOT_O;
+                    return;
+                }
+                if (map[i][j] == DOT_O && (isCellValid(i + 1, j) && isCellValid(i + 3, j))) {
+                    map[i + 1][j] = DOT_O;
+                    return;
+                }
+                if (map[i][i] == DOT_O && (isCellValid(i + 1, i + 1) && isCellValid(i + 3, i + 3))) {
+                    map[i + 1][i + 1] = DOT_O;
+                    return;
+                }
+            }
+        }
         do {
             y = random.nextInt(SIZE);
             x = random.nextInt(SIZE);
@@ -136,8 +148,6 @@ public class Logic {
             }
         }
         return true;
-
-//        return counter == SIZE * SIZE;
     }
 
     static boolean checkLine(int cy, int cx, int vy, int vx, char dot) {
@@ -145,7 +155,6 @@ public class Logic {
                 cy + vy * (DOTS_TO_WIN - 1) < 0) {
             return false;
         }
-
         for (int i = 0; i < DOTS_TO_WIN; i++) {
             if (map[cy + i * vy][cx + i * vx] != dot) {
                 return false;
